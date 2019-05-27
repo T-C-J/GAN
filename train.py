@@ -106,18 +106,16 @@ def train():
         train_writer.add_summary(summary, step)
         train_writer.flush()
 
-        if step % 1000 == 0:
+        if step % 300 == 0:
           logging.info('-----------Step %d:-------------' % step)
           logging.info('  G_loss   : {}'.format(G_loss_val))
           logging.info('  D_Y_loss : {}'.format(D_Y_loss_val))
           logging.info('  F_loss   : {}'.format(F_loss_val))
           logging.info('  D_X_loss : {}'.format(D_X_loss_val))
-          time.sleep(60)
 
         if step % 10000 == 0:
           save_path = saver.save(sess, checkpoints_dir + "/model.ckpt", global_step=step)
           logging.info("Model saved in file: %s" % save_path)
-          time.sleep(120)
         step += 1
 
     except KeyboardInterrupt:
@@ -136,5 +134,6 @@ def main(unused_argv):
   train()
 
 if __name__ == '__main__':
-  logging.basicConfig(level=logging.INFO)
+  fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
+  logging.basicConfig(level=logging.INFO,format=fmt)
   tf.app.run()
